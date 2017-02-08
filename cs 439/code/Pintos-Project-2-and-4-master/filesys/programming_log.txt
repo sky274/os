@@ -1,0 +1,133 @@
+Project 4 Pair Programming Log
+Scott Munro
+Kevin Yoo
+Darren Sadr
+
+total time: 47.5 hrs
+
+04/21/15 - 2.5 hours - Scott Darren Kevin
+Scott, 6:00p - 6:30p
+Darren, 6:30p - 7:00p
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+
+04/22/15 - 2 hours - Scott Darren Kevin
+Darren, 6:00p - 6:30p
+Kevin, 6:30p - 7:00p
+Scott, 7:00p - 7:30p
+Kevin, 7:30p - 8:00p
+
+04/23/15 - 2.5 hours - Scott Darren Kevin
+Kevin, 6:00p - 6:30p
+Darren, 6:30p - 7:00p
+Scott, 7:00p - 7:30p
+Kevin, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+
+04/24/15 - 2.5 hours - Scott Darren Kevin
+Scott, 6:00p - 6:30p
+Darren, 6:30p - 7:00p
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+
+04/25/15 - 2 hours - Scott Darren Kevin
+Scott, 6:00p - 6:30p
+Darren, 6:30p - 7:00p
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+
+4/27/15 - 2.5 hours - Scott Darren Kevin
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+Kevin, 8:30p - 9:00p
+Scott, 9:00p - 9:30p
+
+4/28/15 - 2.5 hours - Darren Kevin
+Darren, 7:00p - 7:30p
+Kevin, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+Kevin, 8:30p - 9:00p
+Darren, 9:00p - 9:30p
+
+4/29/15 - 3 hours - Scott Darren Kevin
+Scott, 6:30p - 7:00p
+Darren, 7:00p - 7:30p
+Kevin, 7:30p - 8:00p
+Scott, 8:30p - 9:00p
+Darren, 9:00p - 9:30p
+
+4/30/15 - 2 hours - Scott Kevin Darren
+Kevin, 7:30p - 8:00p
+Scott, 8:00p - 8:30p
+Darren, 8:30p - 9:00p
+Kevin, 9:00p - 9:30p
+
+5/2/15 - 3 hours -  Kevin Darren Scott
+Kevin, 12:00p - 12:30p
+Darren, 12:30p - 1:00p
+Scott, 1:00p - 1:30p
+Kevin, 1:30p - 2:00p
+Darren, 2:00p - 2:30p
+Scott, 2:30p - 3:00p
+
+5/3/15 - 3 hours -  Kevin Darren Scott
+Kevin, 12:00p - 12:30p
+Darren, 12:30p - 1:00p
+Scott, 1:00p - 1:30p
+Kevin, 1:30p - 2:00p
+Darren, 2:00p - 2:30p
+Scott, 2:30p - 3:00p
+
+5/4/15 - 3 hours - Kevin Darren Scott
+Kevin, 6:00p - 6:30p
+Scott, 6:30p - 7:00p
+Darren, 7:00p - 7:30p
+Kevin, 7:30p - 8:00p
+Scott, 8:00p - 8:30p
+Darren, 8:30p - 9:00p
+
+5/5/15 - 3 hours - Darren Scott Kevin
+Kevin, 5:00p - 5:30p
+Scott, 5:30p - 6:00p
+Darren, 6:00p - 6:30p
+Kevin, 6:30p - 7:00p
+Scott, 7:00p - 7:30p
+Darren, 7:30p - 8:00p
+
+5/6/15 - 4.5 hours - Darren Kevin Scott
+Darren, 6:30p - 7:00p
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+Kevin, 8:30p - 9:00p
+Scott, 9:00p - 9:30p
+Darren, 9:30p - 10:00p
+Kevin, 10:00p - 10:30p
+Scott, 10:30p - 11:00p
+
+5/7/15 - 6 hours - Scott Kevin Darren
+Scott, 6:00p - 6:30p
+Darren, 6:30p - 7:00p
+Kevin, 7:00p - 7:30p
+Scott, 7:30p - 8:00p
+Darren, 8:00p - 8:30p
+Kevin, 8:30p - 9:00p
+Scott, 9:00p - 9:30p
+Darren, 9:30p - 10:00p
+Kevin, 10:00p - 10:30p
+Scott, 10:30p - 11:00p
+Darren, 11:00p - 11:30p
+Kevin, 11:30p - 12:00p
+
+5/8/15 - 4 hours - Kevin Scott Darren
+Darren, 10:00a - 10:30a
+Scott, 10:30a - 11:00a
+Kevin, 11:00a - 11:30a
+Darren, 11:30a - 12:00p
+Scott, 12:00p - 12:30p
+Kevin, 12:30p - 1:00p
+Darren, 1:00p - 1:30p
+Scott, 1:30p - 2:00p

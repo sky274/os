@@ -1,0 +1,30 @@
+1.
+Paging eliminates external fragmentation, but not internal fragmentation. With fixed sized pages we always can allocate a page as long as they are available, it is not dependent on the size of our application. If our application is bigger than a page then we just request more pages. It does not eliminate internal fragmentation because a program may only use a piece of a page and yet all that page memory is allocated to it.
+
+2.
+When a process gets a page fault, a local page replacement algorithm selects for replacement some page that belongs to that same process. A global replacement algorithm is free to select any page in memory.
+Disadvantage of Local page replacement: Only have access to pages that are within your process. May have to swap out too often
+Disadvantage of Global page replacement: Compete for resources to the point of deadlock
+
+3.
+
+
+Question 9.19, page 852, B&O.
+4.
+
+1.
+(a) In a buddy system, up to 50% of the space can be wasted due to internal
+	fragmentation.
+2.
+
+(d) Using the first-fit algorithm on a free list that is ordered according to
+	increasing block sizes is equivalent to using the best-fit algorithm.
+
+3. Mark & sweep garbage collectors are called conservative if:
+
+(b) They treat everything that looks like a pointer as a pointer.
+
+
+Answer: a, d, b
+
+5.to avoid fragmentation and overflow.

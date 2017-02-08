@@ -1,0 +1,78 @@
+Questions to ask for tomorrow....
+=================================
+* is our lazy loading pagefault stuff viable? does it make sense?
+* how exactly do the upages work and would they work with how the faulting addr in the pagefault handler is? given the current pagedirectory code how would if we had some upage addr would we be able to get that page from any address within that page?
+* stack growth stuff... 
+    * how might the stack fault/encounter a bad addr other than just needing more space
+    * if the stack needs to grow, will esp be equal to the faulting addr?
+
+
+pseudocode for pagefault lazy loading handler stuff
+======================================
+1* identify if more of executable is needed
+2* if it is then load the next page from disk into memory
+
+1) keep track of remaining_executable_filesize.
+    * initially this should be equal to read_bytes - page_read_bytes from load_segment...
+    * then whenver we load more pages from the page_fault handler, just decrement by the number of bytes we load at that time.
+        * if remaining filesize = variable rfs and the number of bytes we want to load into the next page is denoted with pfrb...
+        * rfs = 1.5 pages
+        * pfrb = rfs (1.5) > PGSIZE ? PGSIZE : rfs
+        * (pfrb gets set equal to pgsize)
+        * rfs = rfs - pfrb (update the remaining file size after the load)
+        * zero_bytes = PGSIZE - pfrb
+2) loading next page into memory
+    * newkpage = get_frame(faulting_addr)
+    * file_read(newkpage, pfrb, current_thread()->exec) (read pfrb bytes into the new kpage using the executable file associated with the current thread)
+    * install the page(faulting_addr, kpage) (tell page directory about the new page)
+    * pagesup_add(faulting_addr) (tell our supplemental page table about new page)
+
+EVERYTHING UP THERE IS WRONG ^^^^^
+
+NEW PSEUDO FOR LAZY LOADING
+============================
+in load_segment...
+* keep things similar to how they were except NOTHING should be loaded initially. the only thing that is specifically needed is for all of the pages to be added to the supplementary page table so that when the addresses fault they can be retrieved. NO INSTALLING (and probably no bytes reading) (maybe the offset and read_bytes and such)
+
+* inside of the pagefault handler just look up in our supplemental page table if an address is valid, 
+    ASSUME VALID ADDRESSES FOR NOW... if it's not, check if it's a stack page... or just a page address. If it's a stack page then grow the stack.
+* do the filereading and installing using similar code to old load_segment code. 
+
+no need to compare fault_addr to eip 
+
+
+pseudo code for supplemental page table stuff
+=============================================
+FIRST THINGS FIRST CHANGE FRAME_TABLE IMPLEMENTATION
+- each frame should consistently map to the same kpage
+i.e. frames |1|2|3|4|..|n|
+phys memory	|1|2|3|4|..|n|
+
+supplemental page table ideas 
+
+    1. Locate the page that faulted in the supplemental page table. If the memory reference is valid, use the supplemental page table entry to locate the data that goes in the page, which might be in the file system, or in a swap slot, or it might simply be an all-zero page. If you implement sharing, the page's data might even already be in a page frame, but not in the page table.
+
+    If the supplemental page table indicates that the user process should not expect any data at the address it was trying to access, or if the page lies within kernel virtual memory, or if the access is an attempt to write to a read-only page, then the access is invalid. Any invalid access terminates the process and thereby frees all of its resources.
+
+===============================================================================================================================
+	hash into the supplemental page table using thread* or tid and virtual page* or virtual page # or something. Use some sort of info insdie the supplemental page table to locate the page table entry on disk or in swap space
+
+===============================================================================================================================
+    2. Obtain a frame to store the page. See section 4.1.5 Managing the Frame Table, for details.
+    If you implement sharing, the data you need may already be in a frame, in which case you must be able to locate that frame.
+===============================================================================================================================
+
+	this can be done through our find_free_frame function and whatever eviction policy we implement
+    
+
+===============================================================================================================================
+    3. Fetch the data into the frame, by reading it from the file system or swap, zeroing it, etc.
+        If you implement sharing, the page you need may already be in a frame, in which case no action is necessary in this step.
+ ==============================================================================================================================
+ 	use insert frame to read into the file system somehow? maybe read into the kpage pointer somehow? not quite sure yet
+
+
+===============================================================================================================================
+    4. Point the page table entry for the faulting virtual address to the physical page. You can use the functions in "userprog/pagedir.c". 
+===============================================================================================================================
+	use pagedir's pagedir_set_page to map the kpage returned from insert_frame to the upage obtained from disk

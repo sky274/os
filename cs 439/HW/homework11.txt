@@ -1,0 +1,23 @@
+1.
+First, the hardware switches the machine to supervisor mode and causes control to transfer to a routine at a pre-specified address. The operating system has already loaded that address with a pointer to a function that handles the interrupt.
+The function starts by saving all registers.
+Sets up the stack
+scheduler decides which process to run next
+start new process
+2.
+at-least-once semantics
+
+3.
+No. This information can be computed at boot up by looking in the file system tree. 
+
+4.
+bounded resources- resources used by threads or processes are finite
+hold and wait- a thread or a process holds a resource and is waiting for other resources 	       held by another thread or process to become free
+no preemption-	a thread or process only releases a resource voluntarily
+circular wait- 	threads and processes are waiting on each other so that last thread or process waits on the first
+
+5.
+All registers are saved, then memory, metadata -> All saved to a PCB on disk
+TLB is flushed
+Choose new scheduling algorithm to choose new process
+Load metadata that was stored

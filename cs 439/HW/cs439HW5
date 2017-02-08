@@ -1,0 +1,26 @@
+1.
+	Virtual Address (VA) is the address used by CPU. It represents the location of
+the data in virtual space (in disk), which is divided into
+multiple equal-sized pages. 
+
+Physical Address represents the location of data in main memory. It
+represents offset of the referenced physical page.
+
+Translation between physical address and virtual address is supported by
+TLB which contains a page table which has the mapping of VA to PA.
+
+2.
+	easier shared memory between processes
+	eliminates external fragmentation
+3.
+	resident bit: It specifies if the page currently resides in memory
+	clock bit: If the page has been recently used
+	dirty bit: If the page has been modified and must be written to disk.
+4.
+	Paging is vulnerable to internal fragmentation. Each page is the exact size of a frame in physical memory. No memory would be wasted. But internal fragmentation when a process doesn’t use all of the memory of a single page.  
+5.
+	accessing a page that is not in PA causes a page fault. 
+
+   The running process will proceed after the required data is loaded from
+   virtual space to physical space.
+

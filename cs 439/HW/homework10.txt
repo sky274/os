@@ -1,0 +1,25 @@
+1.
+calling a system call- calls a piece of code living in kernel space.
+when an exception comes- exception is called.
+to execute privileged instruction- when we have to reboot.
+
+2.
+3 different copies. 2,4 and 6
+
+3.
+it is a problematic scenario in scheduling in which a high priority task is indirectly preempted by a medium priority task.
+
+The typical example is a low priority process acquiring a resource that a high priority process needs, and then being preempted by a medium priority process, so the high priority process is blocked on the resource while the medium priority one finishes (effectively being executed with a lower priority).
+
+4.
+fdt
+0: STDIN
+1: STDOUT -> pipe write_end
+2: STDERR
+3: pipe read_end -> gone
+4: pipe write_end -> gone
+5: blank
+just redirects STDOUT
+
+5.
+just one

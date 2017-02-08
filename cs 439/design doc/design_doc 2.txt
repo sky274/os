@@ -1,0 +1,259 @@
+			+--------------------+
+			|        CS 439      |
+			| PROJECT 1: THREADS |
+			|   DESIGN DOCUMENT  |
+			+--------------------+
+
+****EACH student submits a (unique) design document.****
+
+---- Name ----
+
+>> Fill your name, UT EID, CS login, email address, and unique number:
+
+Name:Seung Yoo
+EID:Sky274
+CS login:sk7274
+Email:yook94@yahoo.com
+Unique Number:51875
+
+
+Slip days used on this project:0
+
+---- GROUP ----
+
+>> Fill the names, UT EIDs, CS logins, email addresses, and unique numbers
+>> of your group members.  Also fill in each person's ranking on the 
+>> partner evaluation scale, as determined by you.
+
+Name1:Scott Munro
+EID1:snm2232
+CS login:scottnm
+Email:scottnm@utexas.edu
+Unique Number:51860
+Ranking (scale below):exellent
+
+Name2:Darren Sadr
+EID2:ss65728
+CS login:darrenvx
+Email:darrenvx@cs.utexas.edu
+Unique Number:5180
+Ranking (scale below):very good
+
+Name3:
+EID2:
+CS login:
+Email:
+Unique Number:
+Ranking (scale below):
+
+
+---- PARTNER EVALUATION SCALE ----
+
+>> Excellent: Consistently went above and beyond - tutored others, carried
+>> more than his/her fair share of the load.
+
+>> Very Good: Consistently did what he/she was supposed to do, very well
+>> prepared and cooperative.
+
+>> Satisfactory: Usually did what he/she was supposed to do, minimally
+>> prepared and cooperative.
+
+>> Marginal: Sometimes failed to show up and/or rarely prepared.
+
+>> Deficient: Often failed to show up and/or rarely prepared.
+
+>> Unsatisfactory: Consistently failed to show up and/or unprepared.
+
+>> Superficial: Practically no participation.
+
+>> No Show: No participation at all.
+
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+			     ALARM CLOCK
+			     ===========
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+1.static struct list sleep_list- put sleeping threads into a list instead of busy waiting for it to wake up again.
+
+2.bool less_time(struct list_elem* elem, struct list_elem* e, void* aux)- check how much time the thread has to sleep and insert it into the list in a defending order.
+
+3.struct list_elem sleep_elem- A new list_element that allowed us to track the sleeping threads so that we knew what to wake up. 
+
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe what happens in a call to timer_sleep(),
+>> including the effects of the timer interrupt handler.
+	
+	timer_sleep calculates the total number of ticks the thread has to sleep. Once the total time to sleep is calculated, we insert that thread into the sleep_list. In order to put the thread into the list in an orderly fashion, we implemented our own less_time method which compares the time the thread has to sleep. And does sema_down so other threads can be woken up.
+
+	In timer interrupt handler we check the front element of the sleep_list. We check if the wakeup_time is less or equal to the number of ticks, it means that the thread is done waiting. As soon as that happens we pop the front of the list and sema-up to signal that the thread has woken up.
+
+
+>> A3: What steps are taken to minimize the amount of time spent in
+>> the timer interrupt handler?
+	
+	By keeping the sleep list in sorted order, we minimize the time in the interrupt hander. The handler does not have to iterate through the entire list every time and just look at the front of the list.
+
+---- SYNCHRONIZATION ----
+
+>> A4: How are race conditions avoided when multiple threads call
+>> timer_sleep() simultaneously?
+	sema_down which gets called in timer_sleep() aquires a lock. We do this call every time a particular threads gets inserted into the sleep_list.
+
+>> A5: How are race conditions avoided when a timer interrupt occurs
+>> during a call to timer_sleep()?
+
+Interrupts are turned off in timer_sleep. When we are adding things to the sleep_list. Since operations with sleep_list is considered a critical section and does not want to be modified. Disabling interrupt there will avoid race conditions.
+ 
+---- RATIONALE ----
+
+>> A6: Why did you choose this design?  In what ways is it superior to
+>> another design you considered?
+	The goal of stopping execution until the thread has waited the correct number of ticks required us to busy wait. Creating a new list and inserting the waiting threads onto a that list seemed logical and simple. We just called each thread that was waiting a sleep_elem. Fairly easy to keep track of that element. Ordering of the list was also done for sleep_list. The ease with the list can check the time needed to sleep and ease of access made this design a good choice. 
+
+			 PRIORITY SCHEDULING
+			 ===================
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+	void priority_donation(struct thread* blockee, struct thread* blocker, struct lock* lock)- This method does all the donation for our program. It uses recursion to account for the nested donating that can happen.
+
+	bool less_wait_priority(const struct list_elem* left_e, const struct list_elem* right_e, UNUSED void* aux)- this method checks the priority of the different threads. It check two types of priority. The original priority and donated_priority which keeps up with the donations that happen to this thread.
+
+	int donated_priority;- keeps up with the different donations
+    	struct thread* blocked_by;- each thread has a thread that its blocked by. this value is initialized to null if the thread doesn’t wait for any other thread.
+
+
+>> B2: Explain the data structure used to track priority donation.
+>> Use ASCII art to diagram a nested donation.  (Alternately, submit a
+>> .png file.)
+
+A is lock
+H, M are threads
+
+L-M list and thread L aquires the lock and does sema_down. This preempts M thread to run. M thread tries to acquire lock A but sees it can’t and Then donates it’s priority to L thread. Here L thread’s donated_priority gets set to M thread’s priority. L thread runs and realizes the lock then M thread aquires the lock and runs. 
+  
+
+
+---- ALGORITHMS ----
+
+>> B3: How do you ensure that the highest priority thread waiting for
+>> a lock, semaphore, or condition variable wakes up first?
+
+	Defining a structure that orders each new thread by priority as it goes into the sleep_list. The less_priority function.
+
+>> B4: Describe the sequence of events when a call to lock_acquire()
+>> causes a priority donation.  How is nested donation handled?
+	It first sees if there is anyone holding the lock. If there is another lock holder, we set the blocked_by to which ever thread is holding the lock. Then we call the priority_donation method which does the donating and keeping up with all the donations that happen. We handle nested donation by using the priority_donation method which is recursive. The priority_donation receives two threads, the blocker and the blockee and handles the donation accordingly.
+
+>> B5: Describe the sequence of events when lock_release() is called
+>> on a lock that a higher-priority thread is waiting for.
+	The lock holder is updated to null. The priority get set to the thread’s original priority. The highest waiting priority thread acquires the lock and is put on the
+ready queue. Since the ready_list is already ordered, the highest priority thread will run.
+
+---- SYNCHRONIZATION ----
+
+>> B6: Describe a potential race in thread_set_priority() and explain
+>> how your implementation avoids it.  Can you use a lock to avoid
+>> this race?
+	Disabled off interrupts to avoid the potential race
+
+---- RATIONALE ----
+
+>> B7: Why did you choose this design?  In what ways is it superior to
+>> another design you considered?
+	At first we had trouble with keeping up with all the donation that was happening in nested and multiple donation. In the beginning we would just set the donated value to its original even if another thread was still giving donation to it. Using recursion and keeping up with all the donations that came to a certain thread fixed this problem.
+
+		  ADVANCED SCHEDULER (Extra Credit)
+		  =================================
+
+---- DATA STRUCTURES ----
+
+>> C1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+---- ALGORITHMS ----
+
+>> C2: Suppose threads A, B, and C have nice values 0, 1, and 2.  Each
+>> has a recent_cpu value of 0.  Fill in the table below showing the
+>> scheduling decision and the priority and recent_cpu values for each
+>> thread after each given number of timer ticks:
+
+timer  recent_cpu    priority   thread
+ticks   A   B   C   A   B   C   to run
+-----  --  --  --  --  --  --   ------
+ 0
+ 4
+ 8
+12
+16
+20
+24
+28
+32
+36
+
+>> C3: Did any ambiguities in the scheduler specification make values
+>> in the table uncertain?  If so, what rule did you use to resolve
+>> them?  Does this match the behavior of your scheduler?
+
+>> C4: How is the way you divided the cost of scheduling between code
+>> inside and outside interrupt context likely to affect performance?
+
+---- RATIONALE ----
+
+>> C5: Briefly critique your design, pointing out advantages and
+>> disadvantages in your design choices.  If you were to have extra
+>> time to work on this part of the project, how might you choose to
+>> refine or improve your design?
+
+>> C6: The assignment explains arithmetic for fixed-point math in
+>> detail, but it leaves it open to you to implement it.  Why did you
+>> decide to implement it the way you did?  If you created an
+>> abstraction layer for fixed-point math, that is, an abstract data
+>> type and/or a set of functions or macros to manipulate fixed-point
+>> numbers, why did you do so?  If not, why not?
+
+			   SURVEY QUESTIONS
+			   ================
+
+Answering these questions is optional, but it will help us improve the
+course in future semesters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the semester.
+
+>> In your opinion, was this assignment, or any one of the two problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future semesters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future semesters or the remaining projects?
+
+>> Any other comments?
